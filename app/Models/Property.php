@@ -8,27 +8,39 @@ use Illuminate\Database\Eloquent\Model;
 class Property extends Model
 {
     use HasFactory;
-    
-    // Đảm bảo khóa chính là PropertyID
+
+    protected $table = 'properties'; // Khai báo rõ tên bảng cho chắc
     protected $primaryKey = 'PropertyID';
 
-    // Quan hệ với người đăng
+    // ⚠️ PHẦN QUAN TRỌNG MỚI THÊM ⚠️
+    // Phải khai báo các cột được phép ghi dữ liệu
+    protected $fillable = [
+        'user_id',
+        'Title',
+        'Description',
+        'Address',
+        'Image', // Lưu đường dẫn ảnh
+        'CityID',
+        'WardID',
+        'ListingType', // Sale hoặc Rent
+        'Price',
+        'Area',
+        'Status',
+        'is_approved',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // ⭐️ Quan hệ với City (theo trường CityID) ⭐️
     public function city()
     {
-        // Giả định Model City và khóa chính là CityID
         return $this->belongsTo(City::class, 'CityID', 'CityID');
     }
 
-    // ⭐️ Quan hệ với Ward (theo trường WardID) ⭐️
     public function ward()
     {
-        // Giả định Model Ward và khóa chính là WardID
         return $this->belongsTo(Ward::class, 'WardID', 'WardID');
     }
 }
