@@ -9,15 +9,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
 use App\Http\Middleware\IsAdmin; 
 
-// ====================================================
-// 🌏 KHU VỰC CÔNG KHAI (AI CŨNG XEM ĐƯỢC)
-// ====================================================
+// khu vực ai cũng xem được 
 Route::get('/', [PropertyController::class, 'index'])->name('home');
 
 // Danh sách Tin đăng
 Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
 
-// 🌟 ROUTE CHI TIẾT BĐS (ĐÃ KHÔI PHỤC VÀ SỬA LỖI TRONG VIEW)
+//  ROUTE CHI TIẾT BĐS 
 Route::get('/property/{id}', [PropertyController::class, 'show'])
     ->name('properties.show')
     ->where('id', '[0-9]+');
@@ -29,9 +27,8 @@ Route::get('/getCity', [LocationController::class, 'getCity']);
 // Route tìm kiếm
 Route::get('/search', [SearchController::class, 'index'])->name('properties.indexSearch'); 
 
-// ====================================================
-// 🔒 KHU VỰC CHỈ CẦN ĐĂNG NHẬP (USER/ADMIN ĐỀU VÀO ĐƯỢC)
-// ====================================================
+//  KHU VỰC CHỈ CẦN ĐĂNG NHẬP (USER/ADMIN ĐỀU VÀO ĐƯỢC)
+
 Route::middleware('auth')->group(function () {
 
     // --- PROFILE ---
@@ -50,9 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-properties', [PropertyController::class, 'myProperties'])->name('user.properties.index');
 });
 
-// ====================================================
-// 👑 KHU VỰC ADMIN (CHỈ ROLE=1 MỚI VÀO ĐƯỢC)
-// ====================================================
+
+//  KHU VỰC ADMIN (CHỈ ROLE=1 MỚI VÀO ĐƯỢC)
+
 Route::middleware(['auth', IsAdmin::class])->prefix('admin')->group(function () {
     
     // Trang chủ Admin Dashboard
@@ -76,7 +73,7 @@ Route::middleware(['auth', IsAdmin::class])->prefix('admin')->group(function () 
 
 });
 
-// ====================================================
+
 // 🚪 ROUTE MẶC ĐỊNH CỦA BREEZE (AUTH)
-// ====================================================
+
 require __DIR__ . '/auth.php';
