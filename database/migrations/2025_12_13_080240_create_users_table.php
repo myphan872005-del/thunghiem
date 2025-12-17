@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->string('username', 50)->unique()->nullable()->after('id');
-            $table->string('phone', 20)->nullable()->after('email');
+            $table->string('username', 50)->unique()->nullable();
+            $table->string('phone', 20)->nullable();
             // ⭐️ THÊM CÁC TRƯỜNG ROLEID TẠI ĐÂY ⭐️
             $table->unsignedBigInteger('RoleID')->default(2);
             // Quan trọng: Phải đảm bảo bảng 'roles' đã được tạo trước đó.
