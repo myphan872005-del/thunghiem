@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin_user', // ⭐️ Thêm username ⭐️
             'email' => 'admin@demo.com',
             'phone' => '0901234567',     // ⭐️ Thêm phone ⭐️
+            'password'=>'11111111',
             'RoleID' => 1,
         ]);
         User::factory(10)->create(['RoleID' => 2]);
