@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
         }
 
         // Nếu là User thường, chuyển hướng đến khu vực User mặc định (hoặc Dashboard chung)
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('home', absolute: false));
     }
 
     /**

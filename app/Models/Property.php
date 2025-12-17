@@ -26,6 +26,7 @@ class Property extends Model
         'Price',
         'Area',
         'Status',
+        'is_approved',
     ];
 
     public function user()

@@ -14,6 +14,9 @@ class WardSeeder extends Seeder
             ['Name' => 'Phường Hải Châu 2', 'CityID' => 1],
             ['Name' => 'Phường Ba Đình 1', 'CityID' => 2],
             ['Name' => 'Phường Ba Đình 2', 'CityID' => 2],
+            ['Name'=>'Phường Phong Điền','CityID'=>3],
+            
+
         ]);
     }
 }

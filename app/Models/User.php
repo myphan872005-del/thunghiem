@@ -48,4 +48,35 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // File: app/Models/User.php
+public function properties()
+{
+    return $this->hasMany(Property::class, 'user_id');
+}
+public function getRankInfoAttribute()
+{
+    // Đếm số tin đã duyệt
+    $count = \App\Models\Property::where('user_id', $this->id)->where('Status', 'Approved')->count();
+
+    if ($count >= 10) {
+        return [
+            'name'  => '💎 VIP Bạch Kim',
+            'color' => 'text-purple-600', // Tím
+            'icon'  => '👑'
+        ];
+    } elseif ($count >= 5) {
+        return [
+            'name'  => '🥇 Thành viên Vàng',
+            'color' => 'text-yellow-600', // Vàng đậm
+            'icon'  => '⭐'
+        ];
+    } else {
+        return [
+            'name'  => '🥈 Thành viên Mới',
+            'color' => 'text-gray-600', // Xám
+            'icon'  => ''
+        ];
+    }
+}
 }

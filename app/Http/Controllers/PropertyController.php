@@ -7,7 +7,8 @@ use App\Models\City;
 use App\Models\Ward;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 class PropertyController extends Controller
 {
     /**
@@ -95,4 +96,63 @@ class PropertyController extends Controller
     
     return view('property.show', compact('property'));
 }
+public function myProperties()
+    {
+        // 1. Lấy ID người dùng hiện tại
+        $userId = Auth::id();
+
+        // 2. Lấy danh sách tin để hiện bảng (Phân trang 10 tin)
+        // Code sạch: Dùng latest() để tin mới nhất lên đầu
+        $properties = Property::where('user_id', $userId)
+                              ->latest()
+                              ->paginate(10); 
+        
+        // 3. Đếm tổng số tin (để hiện trên tiêu đề)
+        $listingCount = Property::where('user_id', $userId)->count();
+
+        // 4. Đếm số tin ĐÃ DUYỆT (để tính cấp độ)
+        // Lưu ý: Đảm bảo cột trong Database là 'Status' và giá trị là 'Approved'
+        $approvedCount = Property::where('user_id', $userId)
+                                 ->where('Status', 'Approved') 
+                                 ->count();
+
+        // 5. LOGIC TÍNH CẤP ĐỘ (GAMIFICATION)
+        $rankName = 'Sơ Cấp';
+        $nextRank = 'Trung Cấp';
+        $target = 5;      // Mục tiêu mặc định
+        $color = 'gray';  
+
+        if ($approvedCount >= 10) {
+            $rankName = 'Cao Cấp (VIP)';
+            $nextRank = 'Max Level';
+            $target = 1000; // Đã max cấp
+            $color = 'purple';
+        } elseif ($approvedCount >= 5) {
+            $rankName = 'Trung Cấp';
+            $nextRank = 'Cao Cấp';
+            $target = 10;
+            $color = 'blue';
+        }
+
+        // 6. Tính phần trăm thanh chạy
+        if ($approvedCount >= 10) {
+            $progressPercent = 100;
+        } else {
+            // Toán tử 3 ngôi: Nếu target > 0 thì dùng target, không thì dùng 5 (tránh lỗi chia cho 0)
+            $realTarget = $target > 0 ? $target : 5;
+            $progressPercent = ($approvedCount / $realTarget) * 100;
+        }
+
+        // 7. TRẢ VỀ VIEW
+        return view('user.properties.index', compact(
+            'properties', 
+            'listingCount', 
+            'approvedCount', 
+            'rankName', 
+            'progressPercent', 
+            'target', 
+            'nextRank', 
+            'color'
+        ));
+    }
 }
