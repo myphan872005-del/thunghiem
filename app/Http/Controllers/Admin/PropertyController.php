@@ -35,7 +35,7 @@ class PropertyController extends Controller
         ->where('PropertyID', $id) // Đảm bảo đúng tên cột khóa chính (PropertyID hay id?)
         ->update([
             'Status'      => 'Approved',  // Gán cứng chữ này
-            'is_approved' => 1            // Gán luôn cái này cho chắc
+            //'is_approved' => 1            // Gán luôn cái này cho chắc
         ]);
 
     // Kiểm tra xem có dòng nào bị ảnh hưởng không
